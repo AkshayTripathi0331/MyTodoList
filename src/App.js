@@ -3,7 +3,7 @@ import Header from "./MyComponents/Header";
 import { Todos } from "./MyComponents/Todos";
 import { Footer } from "./MyComponents/Footer";
 import { AddTodo } from "./MyComponents/AddTodo";
-import { About } from "./MyComponents/About";
+import  About  from "./MyComponents/About";
 import React, { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
@@ -12,7 +12,9 @@ import {
 } from "react-router-dom";
 
 function App() {
+ 
   let initTodo;
+  //initialising initial list
   if (localStorage.getItem("todos") === null) {
     initTodo = [];
   }
@@ -20,9 +22,11 @@ function App() {
     initTodo = JSON.parse(localStorage.getItem("todos"));
   }
 
+  const [todos, setTodos] = useState(initTodo);
 
+  //delete one item from the list
   const onDelete = (todo) => {
-    console.log("I am ondelete of todo", todo);
+    //console.log("I am ondelete of todo", todo);
     // Deleting this way in react does not work
     // let index = todos.indexOf(todo);
     // todos.splice(index, 1);
@@ -30,12 +34,14 @@ function App() {
     setTodos(todos.filter((e) => {
       return e !== todo;
     }));
-    console.log("deleted", todos)
+
+    //.log("deleted", todos);
     localStorage.setItem("todos", JSON.stringify(todos));
   }
 
+  //adding one element in the list
   const addTodo = (title, desc) => {
-    console.log("I am adding this todo", title, desc)
+    //console.log("I am adding this todo", title, desc)
     let sno;
     if (todos.length === 0) {
       sno = 0;
@@ -49,28 +55,36 @@ function App() {
       desc: desc,
     }
     setTodos([...todos, myTodo]);
-    console.log(myTodo);
+    //console.log("I have successfully added on item in the list");
+    //console.log(myTodo);
   }
 
-  const [todos, setTodos] = useState(initTodo);
+
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos])
+  }, [todos]);
 
   return ( 
     <> 
     <Router>
       <Header title="My Todos List" searchBar={false} /> 
       <Routes>
-          <Route exact path="/" element={  <AddTodo addTodo={addTodo} />}>
-            </Route>
-           <Route exact path ="/" element={<Todos todos={todos} onDelete={onDelete} />}> 
+          <Route exact path="/" element={
+            <> 
+            <AddTodo addTodo={addTodo} />
+            <Todos todos={todos} onDelete={onDelete} /> 
+            </>
+          }>
           </Route>
+          
           <Route exact path="/about" element={<About/>}>        
           </Route> 
-        </Routes> 
+      </Routes> 
+      
       <Footer />
+
     </Router>
+    
     </>
   );
 }

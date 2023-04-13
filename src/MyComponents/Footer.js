@@ -7,9 +7,8 @@ export const Footer = () => {
   //   width: "100%"
   // }
   return (
-    <div className='bg-dark text-light py-3' >
+    <div className='bg-dark text-light py-3 godown' >
       <p className="text-center">Copyright &copy; MyTodoList.com</p>
-
     </div>
   )
 }
